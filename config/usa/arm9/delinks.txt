@@ -11,7 +11,7 @@ src/Combat/Main/BasicAttackCalculation.c:
 
 src/Combat/Main/TensionBonusCalculation.c:
 	complete
-	.text start:0x02074764 end:0x020747a4
+	.text start:0x02074738 end:0x020747a4
 	
 src/Combat/Main/CritRateCalculation.c:
 	complete
