@@ -2,6 +2,8 @@
 #include "Combat/Main/BattleList.h"
 #include "Combat/Main/CombatCalculations.h"
 #include "Combat/Overlay_0/GetCombatantByID.h"
+#include "System/Random.h"
+
 ARM int GetAttackBaseDamage(int* param_1, int attackerId, int defenderId, int* param_4, int* param_5) {
     unsigned int* RNG;
 	struct BattleStruct* battleStruct = GetBattleStruct();
@@ -19,7 +21,7 @@ ARM int GetAttackBaseDamage(int* param_1, int attackerId, int defenderId, int* p
         }
         defendersDefense *= ((float*)param_1)[7];
         defendersDefense = RoundUp(defendersDefense);
-        return CalculatePhysicalDamage(defendersDefense, attacker->currentStats->primaryStats.attack, (int*)param_1[4]);
+        return CalculatePhysicalDamage(defendersDefense, attacker->currentStats->primaryStats.attack, (Random*)param_1[4]);
     } else {
         // depends on param_5, don't know what it is
     }

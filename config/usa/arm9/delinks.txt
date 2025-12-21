@@ -17,6 +17,10 @@ src/Combat/Main/CritRateCalculation.c:
 	complete
 	.text start:0x020747a4 end:0x02074838
 
+src/Combat/Main/DamageCalculation.c:
+	complete
+	.text start:0x02074838 end:0x020748a8
+
 src/Combat/Main/GetBattleList.c:
 	complete
 	.text start:0x0200f398 end:0x0200f3a4
