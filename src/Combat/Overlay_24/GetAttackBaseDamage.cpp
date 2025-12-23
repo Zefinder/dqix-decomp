@@ -21,7 +21,7 @@ ARM int GetAttackBaseDamage(int* param_1, int attackerId, int defenderId, int* p
         }
         defendersDefense *= ((float*)param_1)[7];
         defendersDefense = RoundUp(defendersDefense);
-        return CalculatePhysicalDamage(defendersDefense, attacker->currentStats->primaryStats.attack, (Random*)param_1[4]);
+        return CalculatePhysicalDamage(defendersDefense, attacker->currentStats->primaryStats.attack, (struct Random*)param_1[4]);
     } else {
         // depends on param_5, don't know what it is
     }
