@@ -73,6 +73,7 @@ class DataLabel(object):
 
 
 REGISTER_PATTERN = re.compile('^r[0-9]{1,2},')
+XREF_PATTERN = re.compile('XREF\\[([0-9]+)\\]')
 
 
 def process_operand(mnemonic: str, operand: str, externs: list[str], data_labels: dict[str, DataLabel]) -> tuple[str, str]:
@@ -95,7 +96,6 @@ def process_operand(mnemonic: str, operand: str, externs: list[str], data_labels
             # If value is a register, then DO NOT CHANGE
             if not REGISTER_PATTERN.match(value):
                 operand = operand.replace('[', '=').replace(']', '')
-
                 islabel: bool = True
 
                 try:
@@ -225,6 +225,7 @@ def main(input: str, output: str, target: Target, layout: list[LayoutOptions]) -
         dataline: bool = False
         current_label: DataLabel = DataLabel(DataType.ERROR, '') # Only used when processing data
         hasbytes = LayoutOptions.BYTES in layout
+        xref_lines_left: int = 0
 
         error = False # If true stop parsing
         line_number = 0
@@ -237,6 +238,11 @@ def main(input: str, output: str, target: Target, layout: list[LayoutOptions]) -
             # Strip line and continue if line is empty
             line = line.strip()
             if line == '':
+                continue
+
+            # This line is a XREF, continue
+            if xref_lines_left > 0:
+                xref_lines_left -= 1
                 continue
             
             # Split line into info and remove empty info
@@ -262,40 +268,57 @@ def main(input: str, output: str, target: Target, layout: list[LayoutOptions]) -
                         function_name = first_info
                         asm_lines.append(function_name + ':')
                         wrote_line += 1
+
+                        # Check the XREF to see the number of lines to skip
+                        matcher = XREF_PATTERN.search(line)
+                        if matcher != None:
+                            # First group is the number of ref
+                            # Must be an int because of the regex
+                            xref_lines_left = int(matcher.group(1)) - 1
+                            print(xref_lines_left)
+
                 else:
                     # If starts with a label, then just write the label
                     if first_info.startswith('LAB_'):
                         asm_lines.append(first_info + ':')
                         wrote_line += 1
-                    else:
-                        # If bytes in layout then look at data too
-                        if hasbytes:
-                            # Check if first info is a type 
-                            for type in DataType:
-                                if first_info.startswith(type + '_'):
-                                    # Next line is data
-                                    dataline = True
-                                    if first_info not in data_labels:
-                                        label = DataLabel(type, first_info)
-                                        data_labels[first_info] = label
-                                        current_label = label
-                                    else:
-                                        current_label = data_labels[first_info]
-                                    
-                        if not dataline:
-                            mnemonic, operand, line_externs, (replace_name, replace_line), error = process_instruction(line_number, wrote_line, line, info, layout, data_labels)
-                            if error:
-                                break
 
-                            for extern in line_externs:
-                                externs.append(extern)
-                            if replace_line != -1:
-                                if replace_name not in labels_to_update:
-                                    labels_to_update[replace_name] = [replace_line]
-                                else: 
-                                    labels_to_update[replace_name].append(replace_line)
-                            asm_lines.append(f'\t{mnemonic} {operand}')
-                            wrote_line += 1
+                        # Check the XREF to see the number of lines to skip
+                        matcher = XREF_PATTERN.match(line)
+                        if matcher != None:
+                            # TODO Remove duplicate, DRY is important
+                            # First group is the number of ref
+                            # Must be an int because of the regex
+                            xref_lines_left = int(matcher.group(1)) - 1
+                            
+                    elif hasbytes:
+                        # If bytes in layout then look at data too
+                        # Check if first info is a type 
+                        for type in DataType:
+                            if first_info.startswith(type + '_'):
+                                # Next line is data
+                                dataline = True
+                                if first_info not in data_labels:
+                                    label = DataLabel(type, first_info)
+                                    data_labels[first_info] = label
+                                    current_label = label
+                                else:
+                                    current_label = data_labels[first_info]
+
+                    if not dataline:
+                        mnemonic, operand, line_externs, (replace_name, replace_line), error = process_instruction(line_number, wrote_line, line, info, layout, data_labels)
+                        if error:
+                            break
+
+                        for extern in line_externs:
+                            externs.append(extern)
+                        if replace_line != -1:
+                            if replace_name not in labels_to_update:
+                                labels_to_update[replace_name] = [replace_line]
+                            else: 
+                                labels_to_update[replace_name].append(replace_line)
+                        asm_lines.append(f'\t{mnemonic} {operand}')
+                        wrote_line += 1
 
     for label_name in labels_to_update:
         label: DataLabel = data_labels[label_name]
