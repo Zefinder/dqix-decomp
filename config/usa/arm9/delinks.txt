@@ -23,7 +23,7 @@ src/Combat/Main/DamageCalculation.c:
 
 src/Combat/Main/UnknownFunctions.c:
 	complete
-	.text start:0x020748a8 end:0x02074938
+	.text start:0x020748a8 end:0x020749ac
 
 src/Combat/Main/GetBattleList.c:
 	complete
