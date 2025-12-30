@@ -141,6 +141,11 @@ def process_instruction(line_number: int, wrote_line: int, line: str, info: list
                 break
 
             mnemonic = info[index]
+            if mnemonic.startswith('ldmia'):
+                # Ghidra will say ldmiage instead of ldmgeia
+                cond = mnemonic[5:]
+                if cond != '':
+                    mnemonic = 'ldm' + cond + 'ia'
             index += 1
 
         elif option == LayoutOptions.OPERAND:
@@ -154,8 +159,15 @@ def process_instruction(line_number: int, wrote_line: int, line: str, info: list
             index += 1
             if '[' in operand:
                 while not ']' in operand:
-                    operand += info[index]
+                    if info[index].startswith(']'):
+                        operand += info[index]
+                    else:
+                        operand = operand + ' ' + info[index]
                     index += 1
+            
+            if operand.endswith('lsl'):
+                operand = operand + ' ' + info[index]
+                index += 1
             
             if mnemonic != '':
                 operand, label_to_replace = process_operand(mnemonic, operand, externs, data_labels)
@@ -245,6 +257,10 @@ def main(input: str, output: str, target: Target, layout: list[LayoutOptions]) -
                 xref_lines_left -= 1
                 continue
             
+            # Sometimes ghidra puts random spaces... remove spaces between some symbols
+            # like comma or braces
+            line = ','.join([a.strip() for a in line.split(',')])
+
             # Split line into info and remove empty info
             info: list[str] = [value.strip() for value in line.split(' ') if value.strip() != '']
             first_info = info[0]
@@ -275,7 +291,7 @@ def main(input: str, output: str, target: Target, layout: list[LayoutOptions]) -
                             # First group is the number of ref
                             # Must be an int because of the regex
                             xref_lines_left = int(matcher.group(1)) - 1
-                            print(xref_lines_left)
+                            # TODO Count the number of comma to check how many refs are present on the same line!
 
                 else:
                     # If starts with a label, then just write the label
@@ -290,6 +306,7 @@ def main(input: str, output: str, target: Target, layout: list[LayoutOptions]) -
                             # First group is the number of ref
                             # Must be an int because of the regex
                             xref_lines_left = int(matcher.group(1)) - 1
+                        continue
                             
                     elif hasbytes:
                         # If bytes in layout then look at data too
