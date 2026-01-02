@@ -79,7 +79,7 @@ XREF_PATTERN = re.compile('XREF\\[([0-9]+)\\]')
 def process_operand(mnemonic: str, operand: str, externs: list[str], data_labels: dict[str, DataLabel]) -> tuple[str, str]:
     label_to_replace: str = ''
     # If the mnemonic is a jump that refers to a function...
-    if mnemonic.startswith('bl'):
+    if mnemonic == 'bl':
         # ... the operand is a function, if does not start with _ then custom
         if not operand.startswith('_'):
             externs.append(f'extern void *{operand} // This needs user data')

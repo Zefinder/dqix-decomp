@@ -12,7 +12,7 @@ ARM void UpdateCombatantAttack(int unused, int combatantId) {
     int attackBuff;
     float buffMultiplier;
     battleStruct = GetBattleStruct();
-    combatant = GetCombatantFromList(battleStruct, combatantId);
+    combatant = GetCombatantFromListIfUnknown(battleStruct, combatantId);
     if (combatant == NULL) {
         return;
     }
@@ -42,7 +42,7 @@ ARM void UpdateCombatantDefense(int unused, int combatantId) {
     int defenseBuff;
     float buffMultiplier;
     battleStruct = GetBattleStruct();
-    combatant = GetCombatantFromList(battleStruct, combatantId);
+    combatant = GetCombatantFromListIfUnknown(battleStruct, combatantId);
     if (combatant == NULL) {
         return;
     }
@@ -70,7 +70,7 @@ ARM void UpdateCombatantAgility(int unused, int combatantId) {
     unsigned short agilityBuffed;
     const short maxAgility = 999;
     battleStruct = GetBattleStruct();
-    combatant = GetCombatantFromList(battleStruct, combatantId);
+    combatant = GetCombatantFromListIfUnknown(battleStruct, combatantId);
     if (combatant == NULL) {
         return;
     }
@@ -86,7 +86,7 @@ ARM void UpdateCombatantAgility(int unused, int combatantId) {
 
 ARM void UpdateCombatantCharm(int unused, int combatantId) {
     struct BattleStruct *battleStruct = GetBattleStruct();
-    struct CombatantStruct *combatant = GetCombatantFromList(battleStruct, combatantId);
+    struct CombatantStruct *combatant = GetCombatantFromListIfUnknown(battleStruct, combatantId);
     float charmMultiplier;
     unsigned short charm;
     unsigned short charmBuffed;
@@ -113,7 +113,7 @@ ARM void UpdateCombatantMagicalMight(int unused, int combatantId) {
     const short maxMagicalMight = 999;
     float buffMultiplier;
     struct BattleStruct *battleStruct = GetBattleStruct();
-    struct CombatantStruct *combatant = GetCombatantFromList(battleStruct, combatantId);
+    struct CombatantStruct *combatant = GetCombatantFromListIfUnknown(battleStruct, combatantId);
     if (combatant == NULL) {
         return;
     }
@@ -135,7 +135,7 @@ ARM void UpdateCombatantMagicalMending(int unused, int combatantId) {
     const short maxMagicalMending = 999;
     float buffMultiplier;
     struct BattleStruct *battleStruct = GetBattleStruct();
-    struct CombatantStruct *combatant = GetCombatantFromList(battleStruct, combatantId);
+    struct CombatantStruct *combatant = GetCombatantFromListIfUnknown(battleStruct, combatantId);
     if (combatant == NULL) {
         return;
     }
