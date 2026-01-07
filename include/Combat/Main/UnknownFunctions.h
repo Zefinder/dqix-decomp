@@ -12,3 +12,4 @@ float GetUnknownFloat2(int index);
 float GetScaleMultiplier(bool toScale);
 float GetScaleMultiplier2(bool toScale);
 float GetUnknownFloat3(int index);
+int GetIntValue(int *array);

@@ -141,11 +141,6 @@ def process_instruction(line_number: int, wrote_line: int, line: str, info: list
                 break
 
             mnemonic = info[index]
-            if mnemonic.startswith('ldmia'):
-                # Ghidra will say ldmiage instead of ldmgeia
-                cond = mnemonic[5:]
-                if cond != '':
-                    mnemonic = 'ldm' + cond + 'ia'
             index += 1
 
         elif option == LayoutOptions.OPERAND:
@@ -230,7 +225,7 @@ def process_data(type: DataType, line_number: int, line: str, info: list[str], l
 def main(input: str, output: str, target: Target, layout: list[LayoutOptions]) -> None:
     with open(input, 'r') as file: 
         function_name: str = ''
-        asm_lines: list[str] = ['.' + target]
+        asm_lines: list[str] = ['.' + target, ".syntax unified"]
         externs: list[str] = []
         data_labels: dict[str, DataLabel] = {}
         labels_to_update: dict[str, list[int]] = {}
