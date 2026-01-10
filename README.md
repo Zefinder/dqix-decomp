@@ -84,7 +84,7 @@ Get to the point where the strange function calls referenced on lines 26-28 of A
    - A powerful website designed to aid decompilation of games on different platforms. Select the DS platform and input the assembly of the function you want to decompile, and it will show you how closely the code you write matches the output assembly.
    - Additionally, it's great for collaboration, as you can share a "scratch" of the function you're working on with others and they can seamlessly fork it and contribute.
    - [Check it out here](https://decomp.me)
-   - Note that the compilation options are `-O4 -enum int -char signed -str noreuse -proc arm946e -gccext,on -fp soft -inline noauto -lang=c++ -Cpp_exceptions off -RTTI off -interworking -w off -sym on -gccinc -nolink -msgstyle gcc` with the compiler `3.0 build 131 (MW 2.0sp1sp5)`
+   - Note that the compilation options are `-O2 -enum int -char signed -str noreuse -proc arm946e -gccext,on -fp soft -inline noauto -lang=c++ -Cpp_exceptions off -RTTI off -interworking -w off -sym on -gccinc -nolink -msgstyle gcc` with the compiler `3.0 build 131 (MW 2.0sp1sp5)`
 
 ---
 

@@ -31,7 +31,7 @@ src/Combat/Main/GetBattleList.c:
 
 src/Combat/Main/GetCombatantFromList.c:
 	complete
-	.text start:0x0200fe68 end:0x02010280
+	.text start:0x0200fe68 end:0x020103e8
 
 src/Combat/Main/GetIntValue.c:
 	complete

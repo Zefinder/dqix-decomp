@@ -1,4 +1,5 @@
 #include <globaldefs.h>
+#include "System/Math.h"
 #include "Combat/Main/BattleList.h"
 #include "Combat/Main/UnknownFunctions.h"
 
@@ -220,14 +221,8 @@ ARM void InitUnk3b0(BattleStruct *battleStruct) {
 
 #ifdef __MWERKS__
 // TODO Replace by a function when understand how to proc cmp -> cmpeq
-extern unsigned int func_0200cedc(unsigned int, unsigned int, int, int);
-extern int _ffix();
-extern int _ffixu();
-extern int _fmul();
-extern int _fdiv();
-extern int _fflt();
-extern int _ffltu();
-asm void ComputeUnk3b0Unk4Unk10(struct BattleStruct *battleStruct, unsigned int index, int param_3) {
+extern "C" unsigned int func_0200cedc(unsigned int, unsigned int, int, int);
+ARM asm void ComputeUnk3b0Unk4Unk10(struct BattleStruct *battleStruct, unsigned int index, int param_3) {
 	stmdb sp!,{r3,r4,r5,lr}
 	ldr r3,=0x0000c350
 	mov r4,r0
@@ -310,36 +305,93 @@ asm void ComputeUnk3b0Unk4Unk10(struct BattleStruct *battleStruct, unsigned int 
 // }
 
 
-int GetUnk3b0Unk4(BattleStruct *param_1) {
+ARM int GetUnk3b0Unk4(BattleStruct *param_1) {
     return param_1->unk3b0.unk4;
 }
 
-int GetUnk3b0Unk8(BattleStruct *param_1) {
+ARM int GetUnk3b0Unk8(BattleStruct *param_1) {
     return param_1->unk3b0.unk8;
 }
 
-int GetUnk3b0Unk10(BattleStruct *param_1) {
+ARM int GetUnk3b0Unk10(BattleStruct *param_1) {
     return param_1->unk3b0.unk10;
 }
 
-unsigned int GetUnk3b0Unk14(BattleStruct *param_1) {
+ARM unsigned int GetUnk3b0Unk14(BattleStruct *param_1) {
     return param_1->unk3b0.unk14;
 }
 
-void SetUnk3b0Unkc(BattleStruct *param_1,short param_2) {
+ARM void SetUnk3b0Unkc(BattleStruct *param_1,short param_2) {
     param_1->unk3b0.unkc = param_2;
     return;
 }
 
-short GetUnk3b0Unkc(BattleStruct *param_1) {
+ARM short GetUnk3b0Unkc(BattleStruct *param_1) {
     return param_1->unk3b0.unkc;
 }
 
-void ComputeSomething(struct BattleStruct *battleStruct) {
+ARM void ComputeSomething(struct BattleStruct *battleStruct) {
     if (battleStruct->unk3d8 == 0) {
         return;
     }
     
     // TODO This is a return but decomp function first to know!
-    func_02010288(battleStruct, battleStruct->unk3cc + battleStruct->unk3b0.unk14 * battleStruct->unk3d4);
+    UpdateUnk3dc(battleStruct, battleStruct->unk3cc + battleStruct->unk3b0.unk14 * battleStruct->unk3d4);
+}
+
+ARM float GetUnk3cc(struct BattleStruct *battleStruct) {
+    return battleStruct->unk3cc;
+}
+
+ARM void UpdateUnk3dc(struct BattleStruct *battleStruct, float value) {
+    if (value >= battleStruct->unk3d0) {
+        float tmp = value / battleStruct->unk3d0;
+        tmp = (int)tmp * battleStruct->unk3d0;
+        value = value - tmp;
+    }
+
+    battleStruct->unk3cc = value;
+    if (value >= battleStruct->unk3d0) {
+        battleStruct->unk3cc = battleStruct->unk3cc - battleStruct->unk3d0;
+    }
+
+    if (battleStruct->unk3cc >= data_020f33b4[2]) {
+        battleStruct->unk3dc = 3;
+    } else if (battleStruct->unk3cc >= data_020f33b4[3]) {
+        battleStruct->unk3dc = 2;
+    } else if (battleStruct->unk3cc >= data_020f33b4[4]) {
+        battleStruct->unk3dc = 1;
+    } else { 
+        battleStruct->unk3dc = 0;
+    }
+}
+
+ARM void SetUnk3d8(struct BattleStruct *battleStruct, int value) {
+    battleStruct->unk3d8 = value;
+}
+
+ARM int GetUnk3dc(struct BattleStruct *battleStruct) {
+    return battleStruct->unk3dc;
+}
+
+ARM void UpdateUnk3dcWithValue(struct BattleStruct *battleStruct, int index) {
+    if (index < 4) {
+        float arr[4];
+        battleStruct->unk3dc = index;
+        arr[0] = data_020f33b4[5];
+        arr[1] = data_020f33b4[4];
+        arr[2] = data_020f33b4[3];
+        arr[3] = data_020f33b4[2]; // Matching indices with UpdateUnk3dc!
+        UpdateUnk3dc(battleStruct, arr[index]);
+    }
+}
+
+ARM bool IsUnk3dcNotZero(struct BattleStruct *battleStruct) {
+    return battleStruct->unk3dc != 0;
+}
+
+ARM void SetUnk3e0(struct BattleStruct *battleStruct, float value) {
+    if (value >= 0) {
+        battleStruct->unk3e0 = value;
+    }
 }

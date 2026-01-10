@@ -115,15 +115,18 @@ struct BattleStruct {
     struct Unknown3b0Struct unk3b0; // 0x3b0
     unsigned int unk3c8;            // 0x3c8
     float unk3cc;                   // 0x3cc
-    int unk3d0;                     // 0x3d0
+    float unk3d0;                   // 0x3d0
     float unk3d4;                   // 0x3d4
     int unk3d8;                     // 0x3d8
-    char unk3dc[0x2c24];            // 0x3dc
+    int unk3dc;                     // 0x3dc
+    float unk3e0;                   // 0x3e0
+    char unk3e4[0x2c1c];            // 0x3e4
     char unk3000[0x97d];            // 0x3000
 };
 
 // extern unsigned int func_0200cedc(unsigned int, unsigned int, int, int);
-extern void func_02010288(struct BattleStruct *, float);
+
+extern float data_020f33b4[6];
 
 struct BattleStruct* GetBattleStruct();
 struct CombatantStruct* GetCombatantFromListIfUnknown(struct BattleStruct* battleStruct, int combatantId);
@@ -153,3 +156,10 @@ unsigned int GetUnk3b0Unk14(BattleStruct *battleStruct);
 void SetUnk3b0Unkc(BattleStruct *battleStruct,short value);
 short GetUnk3b0Unkc(BattleStruct *battleStruct);
 void ComputeSomething(struct BattleStruct *battleStruct);
+float GetUnk3cc(struct BattleStruct *battleStruct);
+void UpdateUnk3dc(struct BattleStruct *battleStruct, float value);
+void SetUnk3d8(struct BattleStruct *battleStruct, int value);
+int GetUnk3dc(struct BattleStruct *battleStruct);
+void UpdateUnk3dcWithValue(struct BattleStruct *battleStruct, int index);
+bool IsUnk3dcNotZero(struct BattleStruct *battleStruct);
+void SetUnk3e0(struct BattleStruct *battleStruct, float value);

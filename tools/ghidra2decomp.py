@@ -72,7 +72,7 @@ class DataLabel(object):
         self.used = used
 
 
-REGISTER_PATTERN = re.compile('^r[0-9]{1,2},')
+REGISTER_PATTERN = re.compile('^(r[0-9]{1,2}|sp|ip|pc),')
 XREF_PATTERN = re.compile('XREF\\[([0-9]+)\\]')
 
 
@@ -82,6 +82,7 @@ def process_operand(mnemonic: str, operand: str, externs: list[str], data_labels
     if mnemonic == 'bl':
         # ... the operand is a function, if does not start with _ then custom
         if not operand.startswith('_'):
+            # TODO Check if already in externs...
             externs.append(f'extern void *{operand} // This needs user data')
 
     # If the mnemonic is a load or store containing [], then process
@@ -90,6 +91,7 @@ def process_operand(mnemonic: str, operand: str, externs: list[str], data_labels
         if '[->' in operand:
             value = value = operand.split('[->')[1].split(']')[0]
             operand = operand.replace('[->', '=[')
+            # TODO Check if already in externs
             externs.append(f'extern void *{value}; // This needs the user for the pointer type')
         elif '[' in operand:
             value = operand.split('[')[1].split(']')[0]
@@ -116,6 +118,10 @@ def process_operand(mnemonic: str, operand: str, externs: list[str], data_labels
                         else:
                             label_to_replace = value
     
+    # If operand contains =>, remove it
+    if '=>' in operand:
+        operand = operand.split('=>')[0]
+
     return operand, label_to_replace
 
 
