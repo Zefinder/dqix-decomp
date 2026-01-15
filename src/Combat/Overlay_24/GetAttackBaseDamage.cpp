@@ -6,7 +6,7 @@
 
 ARM int GetAttackBaseDamage(int* param_1, int attackerId, int defenderId, int* param_4, int* param_5) {
     unsigned int* RNG;
-	struct BattleStruct* battleStruct = GetBattleStruct();
+	struct MainStruct* battleStruct = GetMainStruct();
     RNG = (unsigned int*)param_1[4];
     if (param_5 == NULL) {
         float defendersDefense;

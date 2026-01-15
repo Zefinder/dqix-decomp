@@ -29,13 +29,21 @@ src/Combat/Main/GetBattleList.c:
 	complete
 	.text start:0x0200f398 end:0x0200f3a4
 
-src/Combat/Main/GetCombatantFromList.c:
+src/Combat/Main/CombatantInfo.c:
 	complete
-	.text start:0x0200fe68 end:0x020103e8
+	.text start:0x0200fd38 end:0x020100a0
+
+src/Combat/Main/StructSetterGetter.c:
+	complete
+	.text start:0x020100a0 end:0x020103f0
 
 src/Combat/Main/GetIntValue.c:
 	complete
 	.text start:0x0202e09c end:0x0202e0a4
+
+src/Save/SaveTime.c:
+	complete
+	.text start:0x020103f0 end:0x02010604
 
 src/System/Random.c:
 	complete

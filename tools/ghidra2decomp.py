@@ -34,7 +34,7 @@ class LayoutOptions(StrEnum):
 
 
 class DataType(StrEnum):
-    BYTE='BYTE'
+    BYTE = 'BYTE'
     CHAR = 'CHAR'
     DOUBLE = 'DOUBLE'
     DWORD = 'DWORD'
@@ -57,6 +57,21 @@ class DataType(StrEnum):
                 return e
                 
         return DataType.ERROR
+
+
+class ShiftOperator(StrEnum):
+    LSL = 'LSL'
+    LSR = 'LSR'
+    ASR = 'ASR'
+    ROR = 'ROR'
+
+    @staticmethod
+    def parse(value: str):
+        for e in ShiftOperator:
+            if value.lower() == e:
+                return e
+                
+        return ShiftOperator.LSL
 
 
 class DataLabel(object):
@@ -166,15 +181,17 @@ def process_instruction(line_number: int, wrote_line: int, line: str, info: list
                         operand = operand + ' ' + info[index]
                     index += 1
             
-            if operand.endswith('lsl'):
-                operand = operand + ' ' + info[index]
-                index += 1
+            # If there is a shift, then wait for spaces...
+            for shift in ShiftOperator:
+                if operand.upper().endswith(shift):
+                    operand = operand + ' ' + info[index]
+                    index += 1
+                    break
             
             if mnemonic != '':
                 operand, label_to_replace = process_operand(mnemonic, operand, externs, data_labels)
                 if label_to_replace != '':
-                    # Line to replace is the next index because this one is not yet written
-                    replace = (label_to_replace, wrote_line + 1)
+                    replace = (label_to_replace, wrote_line)
 
         # End of line comment means nothing else
         elif option == LayoutOptions.EOL_COMMENT:
@@ -242,7 +259,7 @@ def main(input: str, output: str, target: Target, layout: list[LayoutOptions]) -
 
         error = False # If true stop parsing
         line_number = 0
-        wrote_line = 0
+        wrote_line = len(asm_lines)
         while (line := file.readline()) != '':
             line_number += 1
             if (error):

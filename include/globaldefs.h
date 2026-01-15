@@ -17,3 +17,6 @@
 #define THUMB
 #endif
 #define NULL 0 // appeases vs code
+#define BUS_CLOCKSPEED 0x1ff6210
+#define ARM7_CLOCKSPEED 0x1ff6210
+#define ARM9_CLOCKSPEED 0x3fec420
