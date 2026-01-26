@@ -41,6 +41,11 @@ struct CombatantStruct {
 };
 
 extern float data_020f33b4[6];
+extern "C" void func_020ca594(struct MainStruct *, int, int);
+extern "C" void func_020c99c8(unsigned char *);
+extern "C" void func_02001aac(struct CombatantStruct **, int, int);
+extern "C" void func_020ca650(int, int);
+
 
 struct MainStruct* GetMainStruct();
 
@@ -62,8 +67,16 @@ int GetNumberCombatant(struct MainStruct *mainStruct, char *unknown);
 bool IsUnknownIntOdd(struct MainStruct *mainStruct);
 
 // Setters and getters (Prob not battle?)
+struct UnkStruct* UnkStructCopy(struct UnkStruct *src, struct UnkStruct *dest);
+void InitUnk0(struct MainStruct *mainStruct, int param, int value);
+void InitUnk6(struct MainStruct *mainStruct);
+unsigned char InitUnk5(struct MainStruct *mainStruct);
 void InitUnk3b0(MainStruct *mainStruct);
+struct UnkStruct* InitUnk3f8(struct MainStruct *mainStruct, struct UnkStruct *value);
+struct UnkStruct* InitUnk3f8Clone(struct MainStruct *mainStruct, struct UnkStruct *value);
+void InitUnk7f74(struct MainStruct *mainStruct);
 
+unsigned char GetUnk4(struct MainStruct *mainStruct);
 int GetUnk3ac(struct MainStruct *mainStruct);
 int* GetUnk3b0(struct MainStruct *mainStruct);
 int* GetUnk3b0IfEqual2(struct MainStruct *mainStruct);
@@ -76,8 +89,11 @@ unsigned int GetUnk3b0Unk14(struct MainStruct *mainStruct);
 float GetUnk3cc(struct MainStruct *mainStruct);
 int GetUnk3dc(struct MainStruct *mainStruct);
 float GetUnk3e0(struct MainStruct *mainStruct);
+struct UnkStruct* GetUnk3f8(struct MainStruct *mainStruct);
 unsigned char GetUnk3000Char(struct MainStruct *mainStruct);
 
+void SetUnk0(struct MainStruct *mainStruct, int value);
+void SetUnk4(struct MainStruct *mainStruct, unsigned char value);
 void SetUnk3ac(struct MainStruct *mainStruct, int value);
 void SetUnk3b0(struct MainStruct *mainStruct, int *value);
 void SetUnk3b0Unkc(MainStruct *mainStruct,short value);

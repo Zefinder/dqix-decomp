@@ -31,7 +31,7 @@ src/Combat/Main/GetBattleList.c:
 
 src/Combat/Main/CombatantInfo.c:
 	complete
-	.text start:0x0200fd38 end:0x020100a0
+	.text start:0x0200fad4 end:0x020100a0
 
 src/Combat/Main/StructSetterGetter.c:
 	complete

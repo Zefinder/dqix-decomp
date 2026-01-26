@@ -87,7 +87,7 @@ class DataLabel(object):
         self.used = used
 
 
-REGISTER_PATTERN = re.compile('^(r[0-9]{1,2}|sp|ip|pc),')
+REGISTER_PATTERN = re.compile('^(r[0-9]{1,2}|sp|ip|pc|lr),')
 XREF_PATTERN = re.compile('XREF\\[([0-9]+)\\]')
 
 

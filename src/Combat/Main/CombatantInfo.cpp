@@ -2,8 +2,110 @@
 #include "Combat/Main/BattleList.h"
 #include "System/MainStruct.h"
 
+void InitUnk6(struct MainStruct *mainStruct) {
+    func_020ca594(mainStruct, 0, 6);
+    mainStruct->unk6_0 = 0;
+    mainStruct->unk6_1 = 0;
+    mainStruct->addressList[0] = 0;
+}
 
+unsigned char InitUnk5(struct MainStruct *mainStruct) {
+    unsigned char str[0x54]; // Is this a string?
+    func_020c99c8(str);
+    unsigned char firstChar = str[0];
 
+    mainStruct->unk5 = firstChar;
+    if (firstChar != 2 && firstChar != 5) {
+        mainStruct->unk5 = 1;
+    }
+
+    return mainStruct->unk5;
+}
+
+ARM void InitUnk7f74(struct MainStruct *mainStruct) {
+    mainStruct->unk7f74.unk0 = 0;
+    mainStruct->unk7f74.unk1 = 0;
+    for (unsigned char i = 0; i < 4; i++) {
+        mainStruct->unk7f74.unk2[i] = 0;
+    }
+    mainStruct->unk7f74.unk6 = 0;
+}
+
+ARM void SetUnk0(struct MainStruct *mainStruct, int value) {
+    mainStruct->unk0 = value;
+}
+
+ARM int GetUnk0(struct MainStruct *mainStruct) {
+    return mainStruct->unk0;
+}
+
+ARM void SetUnk4(struct MainStruct *mainStruct, unsigned char value) {
+    mainStruct->unk4 = value;
+}
+
+ARM unsigned char GetUnk4(struct MainStruct *mainStruct) {
+    return mainStruct->unk4;
+}
+
+ARM struct UnkStruct* InitUnk3f8(struct MainStruct *mainStruct, struct UnkStruct *value) {
+    return UnkStructCopy(&mainStruct->unk3f8, value);
+}
+
+ARM struct UnkStruct* UnkStructCopy(struct UnkStruct *src, struct UnkStruct *dest) {
+    src->unk0 = dest->unk0;
+    src->unk2 = dest->unk2;
+    src->unk3 = dest->unk3;
+    src->unk4 = dest->unk4;
+    src->unk5 = dest->unk5;
+    src->unk6 = dest->unk6;
+    src->unk7 = dest->unk7;
+    src->unk8 = dest->unk8;
+    src->unk9 = dest->unk9;
+    src->unka = dest->unka;
+    src->unkb = dest->unkb;
+    src->unkc = dest->unkc;
+    src->unkd = dest->unkd;
+    src->unke = dest->unke;
+    #ifndef __INTELLISENSE__
+    src->unk10 = dest->unk10; // This works even if VSC says the opposite
+    #endif
+    src->unk1c = dest->unk1c;
+    src->unk1e = dest->unk1e;
+    src->unk20 = dest->unk20;
+    src->unk24 = dest->unk24;
+    src->unk28 = dest->unk28;
+    src->unk2c = dest->unk2c;
+    #ifndef __INTELLISENSE__
+    src->unk30 = dest->unk30;
+    #endif
+    src->unk60 = dest->unk60;
+    src->unk61 = dest->unk61;
+    src->unk62 = dest->unk62;
+    src->unk63 = dest->unk63;
+    src->unk64 = dest->unk64;
+    src->unk65 = dest->unk65;
+    src->unk66 = dest->unk66;
+    src->unk67 = dest->unk67;
+    src->unk68 = dest->unk68;
+    src->unk69 = dest->unk69;
+    src->unk6a = dest->unk6a;
+    src->unk6c = dest->unk6c;
+    src->unk6e = dest->unk6e;
+    return src;
+}
+
+ARM struct UnkStruct* InitUnk3f8Clone(struct MainStruct *mainStruct, struct UnkStruct *value) {
+    return UnkStructCopy(&mainStruct->unk3f8, value);
+}
+
+ARM struct UnkStruct* GetUnk3f8(struct MainStruct *mainStruct) {
+    return &mainStruct->unk3f8;
+}
+
+ARM void InitUnk0(struct MainStruct *mainStruct, int param, int value) {
+    func_020ca650(mainStruct->unk0, param);
+    mainStruct->unk0 += value;
+}
 
 ARM void SetCombatantToList(MainStruct *mainStruct, int index, CombatantStruct *value) {
     mainStruct->combatantList[index] = value;
@@ -14,7 +116,6 @@ ARM void ResetAddressAtIndex(struct MainStruct *maintStruct,int index) {
   maintStruct->addressList[index] = 0;
 }
 
-extern "C" void func_02001aac(struct CombatantStruct **, int, int);
 ARM void DoSomething(struct MainStruct *mainStruct) {
     func_02001aac(mainStruct->combatantList, 0, 0x3a4);
 } 
